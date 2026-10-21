@@ -22,7 +22,9 @@ public sealed class AppSettings
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
     public AppTheme Theme { get; set; } = AppTheme.System;
-    public ComputeDevice ComputeDevice { get; set; } = ComputeDevice.Gpu;
+    public ComputeDevice ComputeDevice { get; set; } = OperatingSystem.IsMacOS()
+        ? ComputeDevice.Apple
+        : ComputeDevice.Gpu;
     public string Model { get; set; } = "turbo";
 
     public static string SettingsPath => Path.Combine(
@@ -55,7 +57,7 @@ public sealed class AppSettings
             return;
         }
 
-        if (device == ComputeDevice.Apple && OperatingSystem.IsMacOS())
+        if (device != ComputeDevice.Cpu && OperatingSystem.IsMacOS())
         {
             RuntimeOptions.RuntimeLibraryOrder = [RuntimeLibrary.CoreML, RuntimeLibrary.Cpu];
             return;

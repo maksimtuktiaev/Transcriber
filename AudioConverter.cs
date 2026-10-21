@@ -121,9 +121,9 @@ public static class AudioConverter
         if (File.Exists(local))
             return local;
 
-        string? path = Environment.GetEnvironmentVariable("PATH");
-        if (path == null)
-            return null;
+        string path = Environment.GetEnvironmentVariable("PATH") ?? "";
+        if (OperatingSystem.IsMacOS())
+            path += Path.PathSeparator + "/opt/homebrew/bin" + Path.PathSeparator + "/usr/local/bin";
 
         foreach (var dir in path.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries))
         {

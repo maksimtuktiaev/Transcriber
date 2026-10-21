@@ -6,6 +6,8 @@ public partial class SettingsWindow : Window
 {
     private readonly AppSettings _settings;
 
+    public SettingsWindow() : this(AppSettings.Load()) { }
+
     public SettingsWindow(AppSettings settings)
     {
         InitializeComponent();
