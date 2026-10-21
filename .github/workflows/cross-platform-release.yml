@@ -34,6 +34,31 @@ jobs:
         run: |
           chmod +x publish/Transcriber
           tar -czf Transcriber-${{ matrix.rid }}.tar.gz -C publish .
+          mkdir -p linux-package/DEBIAN linux-package/opt/Transcriber linux-package/usr/share/applications
+          cp -R publish/. linux-package/opt/Transcriber/
+          chmod +x linux-package/opt/Transcriber/Transcriber
+          cat > linux-package/DEBIAN/control <<CONTROL
+          Package: transcriber
+          Version: ${GITHUB_REF_NAME#v}
+          Section: sound
+          Priority: optional
+          Architecture: amd64
+          Depends: ffmpeg, libstdc++6
+          Maintainer: Transcriber contributors
+          Description: Offline audio and video transcription with Whisper
+          CONTROL
+          cat > linux-package/usr/share/applications/transcriber.desktop <<'DESKTOP'
+          [Desktop Entry]
+          Name=Transcriber
+          Comment=Offline audio and video transcription
+          Exec=/opt/Transcriber/Transcriber
+          Path=/opt/Transcriber
+          Terminal=false
+          Type=Application
+          Categories=AudioVideo;Audio;Utility;
+          StartupNotify=true
+          DESKTOP
+          dpkg-deb --build --root-owner-group linux-package Transcriber-${{ matrix.rid }}.deb
       - name: Package macOS app
         if: runner.os == 'macOS'
         run: |
@@ -54,6 +79,7 @@ jobs:
           PLIST
           chmod +x Transcriber.app/Contents/MacOS/Transcriber
           codesign --force --deep --sign - Transcriber.app
+          hdiutil create -volname Transcriber -srcfolder Transcriber.app -ov -format UDZO Transcriber-${{ matrix.rid }}.dmg
           ditto -c -k --sequesterRsrc --keepParent Transcriber.app Transcriber-${{ matrix.rid }}.zip
       - uses: actions/upload-artifact@v4
         with:

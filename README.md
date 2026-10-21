@@ -57,7 +57,13 @@
 
 ## Установка для Linux
 
-В разделе [Releases](https://github.com/maksimtuktiaev/Transcriber/releases) скачайте `Transcriber-linux-x64.tar.gz` из релиза версии 1.1.0 или новее и распакуйте его в удобную папку. Самостоятельная сборка содержит .NET и библиотеки распознавания; устанавливать .NET отдельно не нужно.
+В разделе [Releases](https://github.com/maksimtuktiaev/Transcriber/releases) скачайте пакет `Transcriber-linux-x64.deb` из релиза версии 1.1.1 или новее и установите его двойным щелчком в графическом центре приложений. Либо выполните:
+
+```bash
+sudo apt install ./Transcriber-linux-x64.deb
+```
+
+Пакет содержит .NET и библиотеки распознавания, а установщик автоматически подтянет FFmpeg и `libstdc++6`. Отдельно доступен переносимый архив `Transcriber-linux-x64.tar.gz`.
 
 Перед первым запуском установите FFmpeg и системную библиотеку `libstdc++6`. Например, в Ubuntu или Debian:
 
@@ -77,7 +83,7 @@ chmod +x Transcriber
 
 ## Установка для macOS
 
-В [разделе релизов](https://github.com/maksimtuktiaev/Transcriber/releases) скачайте архив для своего Mac: `Transcriber-osx-arm64.zip` для Apple Silicon (M1 и новее) или `Transcriber-osx-x64.zip` для Mac с процессором Intel. Распакуйте архив и переместите `Transcriber.app` в папку **Программы**.
+В [разделе релизов](https://github.com/maksimtuktiaev/Transcriber/releases) скачайте образ для своего Mac: `Transcriber-osx-arm64.dmg` для Apple Silicon (M1 и новее) или `Transcriber-osx-x64.dmg` для Mac с процессором Intel. Откройте образ и перетащите `Transcriber.app` в папку **Программы**. Также можно скачать ZIP-архив приложения.
 
 Установите FFmpeg, например через [Homebrew](https://brew.sh/):
 
