@@ -1,0 +1,25 @@
+Transcriber — notices for third-party components
+
+WHISPER.NET
+Whisper.net and its native runtime packages are distributed under the MIT License.
+Project: https://github.com/sandrohanea/whisper.net
+The full MIT license is included as whisper.net-LICENSE.txt.
+
+NAUDIO
+NAudio is distributed under the MIT License.
+Project: https://github.com/naudio/NAudio
+The full MIT license is included as naudio-LICENSE.txt.
+
+FFMPEG
+This installer includes the Windows x64 shared LGPL build FFmpeg n9.0.2-31-gc89d6ee1ca
+from BtbN/FFmpeg-Builds. FFmpeg is a separate executable and communicates with
+Transcriber through command-line arguments and WAV files.
+Builds: https://github.com/BtbN/FFmpeg-Builds
+FFmpeg source at the corresponding revision: https://github.com/FFmpeg/FFmpeg/tree/gc89d6ee1ca
+The LGPL license text is included as FFmpeg-LICENSE.txt. The shared FFmpeg libraries
+are replaceable independently of Transcriber.
+
+MICROSOFT .NET
+The self-contained package includes Microsoft .NET 8 runtime components.
+Microsoft license and third-party notices are included as dotnet-LICENSE.txt and
+dotnet-ThirdPartyNotices.txt.

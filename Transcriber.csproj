@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Transcriber</AssemblyName>
+    <RootNamespace>Transcriber</RootNamespace>
+    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <ApplicationIcon>icons\icons.ico</ApplicationIcon>
+    <Version>1.0.0</Version>
+    <Company>Transcriber</Company>
+    <Product>Transcriber</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Движок распознавания (аналог faster-whisper) -->
+    <PackageReference Include="Whisper.net" Version="1.9.1" />
+
+    <!-- CPU runtime для режима, выбираемого в настройках приложения -->
+    <PackageReference Include="Whisper.net.Runtime" Version="1.9.1" />
+
+    <!-- NVIDIA GPU runtimes: выбор CUDA 13 или CUDA 12 задаётся настройками приложения. -->
+    <PackageReference Include="Whisper.net.Runtime.Cuda" Version="1.9.1" />
+    <PackageReference Include="Whisper.net.Runtime.Cuda12" Version="1.9.1" />
+
+    <!-- Запасной способ прочитать аудио, если на ПК нет ffmpeg -->
+    <PackageReference Include="NAudio" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Inno Setup находится рядом с проектом; его примеры не являются исходниками Transcriber. -->
+    <Compile Remove="installer\**\*.cs" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,12 @@
+bin/
+obj/
+publish/
+
+# Generated self-contained deployment and packaged installer
+installer/payload/
+installer/release/
+installer/tools/
+
+# Downloaded FFmpeg archive and extracted distribution; keep third-party notices tracked
+installer/third-party/*.zip
+installer/third-party/ffmpeg-extracted/
