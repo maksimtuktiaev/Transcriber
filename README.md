@@ -1,12 +1,12 @@
 # Transcriber
 
-Приложение для расшифровки аудио- и видеофайлов в текст. Распознавание выполняется локально с помощью Whisper: можно выбрать процессор или видеокарту NVIDIA. Готовый текст сохраняется рядом с исходным файлом.
+Кроссплатформенное приложение для расшифровки аудио и видео на Windows, Linux и macOS. Распознавание выполняется локально с помощью Whisper; доступны CPU, NVIDIA CUDA и Apple Core ML. Готовый текст сохраняется рядом с исходным файлом.
 
 ## Установка для Windows
 
 ### Быстрая установка
 
-1. Откройте [страницу релизов](https://github.com/maksimtuktiaev/Transcriber-test/releases) и скачайте `TranscriberSetup-x64.exe` из последнего релиза.
+1. Скачайте [установщик Windows](https://github.com/maksimtuktiaev/Transcriber/releases/download/v1.0.0/TranscriberSetup-x64.exe) из релиза v1.0.0.
 2. Запустите установщик и следуйте подсказкам. Установка выполняется для текущего пользователя и обычно не требует прав администратора. При желании установщик создаст ярлык на рабочем столе.
 3. Запустите **Transcriber** из меню «Пуск» или с рабочего стола.
 4. При первом распознавании выберите модель. Приложение скачает её автоматически — на это потребуется интернет и свободное место на диске.
@@ -57,7 +57,7 @@
 
 ## Установка для Linux
 
-В разделе [Releases](https://github.com/maksimtuktiaev/Transcriber-test/releases) скачайте `Transcriber-linux-x64.tar.gz` из релиза версии 1.1.0 или новее и распакуйте его в удобную папку. Самостоятельная сборка содержит .NET и библиотеки распознавания; устанавливать .NET отдельно не нужно.
+В разделе [Releases](https://github.com/maksimtuktiaev/Transcriber/releases) скачайте `Transcriber-linux-x64.tar.gz` из релиза версии 1.1.0 или новее и распакуйте его в удобную папку. Самостоятельная сборка содержит .NET и библиотеки распознавания; устанавливать .NET отдельно не нужно.
 
 Перед первым запуском установите FFmpeg и системную библиотеку `libstdc++6`. Например, в Ubuntu или Debian:
 
@@ -77,7 +77,7 @@ chmod +x Transcriber
 
 ## Установка для macOS
 
-В [разделе релизов](https://github.com/maksimtuktiaev/Transcriber-test/releases) скачайте архив для своего Mac: `Transcriber-osx-arm64.zip` для Apple Silicon (M1 и новее) или `Transcriber-osx-x64.zip` для Mac с процессором Intel. Распакуйте архив и переместите `Transcriber.app` в папку **Программы**.
+В [разделе релизов](https://github.com/maksimtuktiaev/Transcriber/releases) скачайте архив для своего Mac: `Transcriber-osx-arm64.zip` для Apple Silicon (M1 и новее) или `Transcriber-osx-x64.zip` для Mac с процессором Intel. Распакуйте архив и переместите `Transcriber.app` в папку **Программы**.
 
 Установите FFmpeg, например через [Homebrew](https://brew.sh/):
 
