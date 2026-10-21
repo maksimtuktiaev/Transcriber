@@ -97,7 +97,7 @@ brew install ffmpeg
 dotnet run --project CrossPlatform/Transcriber.CrossPlatform.csproj
 ```
 
-Автономные сборки для целевых систем создаются командой `dotnet publish` с нужным runtime identifier, например `linux-x64`, `osx-arm64` или `osx-x64`. Релизные архивы собираются GitHub Actions при публикации тега вида `v*`.
+Автономные сборки для целевых систем создаются командой `dotnet publish` с нужным runtime identifier, например `linux-x64`, `osx-arm64` или `osx-x64`. GitHub Actions собирает архивы для проверки при каждом обновлении основной ветки, а прикрепляет их к релизу при публикации тега версии вида `v*`.
 
 ## Запуск из исходного кода
 

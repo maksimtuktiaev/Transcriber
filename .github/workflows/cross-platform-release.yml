@@ -2,6 +2,7 @@ name: Cross-platform release
 
 on:
   push:
+    branches: [main]
     tags: ["v*"]
 
 permissions:
@@ -60,6 +61,7 @@ jobs:
           path: Transcriber-${{ matrix.rid }}.*
 
   release:
+    if: startsWith(github.ref, 'refs/tags/v')
     needs: build
     runs-on: ubuntu-latest
     steps:
