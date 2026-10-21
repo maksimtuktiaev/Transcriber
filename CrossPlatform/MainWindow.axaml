@@ -1,0 +1,64 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Transcriber.MainWindow"
+        Title="Transcriber" Width="760" Height="650" MinWidth="600" MinHeight="560"
+        WindowStartupLocation="CenterScreen">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="30" Spacing="18" MaxWidth="1000" HorizontalAlignment="Stretch">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="4">
+          <TextBlock Text="Transcriber" FontSize="30" FontWeight="Bold" />
+          <TextBlock Text="Превратите запись в понятный текст" Opacity="0.68" FontSize="14" />
+        </StackPanel>
+        <Button Grid.Column="1" Classes="subtle" Content="⚙  Настройки" Click="Settings_Click" VerticalAlignment="Center" />
+      </Grid>
+
+      <Border Classes="card" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+        <StackPanel Spacing="14">
+          <TextBlock Text="ФАЙЛ ДЛЯ РАСШИФРОВКИ" FontSize="12" FontWeight="SemiBold" Foreground="#4388F5" />
+          <TextBlock Name="FileLabel" Text="Файл не выбран" TextTrimming="CharacterEllipsis" />
+          <StackPanel Orientation="Horizontal" Spacing="14">
+            <Button Classes="primary" Content="Выбрать файл" Click="ChooseFile_Click" />
+            <TextBlock Text="MP3 · WAV · M4A · MP4 · MKV · MOV · FLAC · OGG" VerticalAlignment="Center" Opacity="0.65" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <Grid ColumnDefinitions="Auto,180,*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="10">
+        <TextBlock Text="Модель" VerticalAlignment="Center" />
+        <ComboBox Name="ModelBox" Grid.Column="1" SelectedIndex="0">
+          <ComboBoxItem Content="turbo" />
+          <ComboBoxItem Content="small" />
+          <ComboBoxItem Content="base" />
+        </ComboBox>
+        <Button Grid.Column="3" Classes="primary" Content="Начать расшифровку" Click="Start_Click" />
+        <TextBlock Name="DeviceLabel" Grid.Row="1" Grid.ColumnSpan="4" Opacity="0.68" />
+      </Grid>
+
+      <Border Classes="card" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+        <StackPanel Spacing="12">
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Name="StatusLabel" Text="Готово к работе" FontWeight="SemiBold" />
+            <TextBlock Name="PercentLabel" Grid.Column="1" Text="" />
+          </Grid>
+          <ProgressBar Name="Progress" Minimum="0" Maximum="100" Height="8" />
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Name="EtaLabel" Text="Выберите аудио- или видеофайл" Opacity="0.65" />
+            <Button Name="CancelButton" Grid.Column="1" Classes="subtle" Content="Отмена" IsVisible="False" Click="Cancel_Click" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <Border Name="ResultCard" Classes="card" Background="{DynamicResource SystemControlBackgroundAltHighBrush}" IsVisible="False">
+        <StackPanel Spacing="14">
+          <TextBlock Name="SavedLabel" Foreground="#4388F5" TextWrapping="Wrap" />
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <Button Classes="primary" Content="Открыть текст" Click="OpenText_Click" />
+            <Button Classes="subtle" Content="Показать в папке" Click="OpenFolder_Click" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+      <TextBlock Name="ErrorLabel" Foreground="#E05B5B" TextWrapping="Wrap" IsVisible="False" />
+    </StackPanel>
+  </ScrollViewer>
+</Window>

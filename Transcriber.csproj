@@ -33,6 +33,7 @@
   <ItemGroup>
     <!-- Inno Setup находится рядом с проектом; его примеры не являются исходниками Transcriber. -->
     <Compile Remove="installer\**\*.cs" />
+    <Compile Remove="CrossPlatform\**\*.cs" />
   </ItemGroup>
 
 </Project>

@@ -1,12 +1,14 @@
 using System.Diagnostics;
+#if WINDOWS
 using NAudio.Wave;
+#endif
 
 namespace Transcriber;
 
 /// <summary>
 /// Whisper принимает только WAV 16 кГц, моно, 16 бит.
 /// Python-версия делала это внутри faster-whisper (через PyAV), здесь — через ffmpeg
-/// или, если его нет, через встроенные кодеки Windows (Media Foundation).
+/// через установленный ffmpeg (встроенный Media Foundation используется только в Windows).
 /// </summary>
 public static class AudioConverter
 {
@@ -28,9 +30,13 @@ public static class AudioConverter
                     return (wavPath, GetDuration(wavPath));
             }
 
-            // Запасной путь: Media Foundation (mp3, wav, m4a, mp4, wma, часто avi/flac)
+            // Запасной путь Windows: Media Foundation.
+#if WINDOWS
             await Task.Run(() => ConvertWithMediaFoundation(inputFile, wavPath), ct);
             return (wavPath, GetDuration(wavPath));
+#else
+            throw new InvalidOperationException(ffmpegError ?? "ffmpeg не найден в PATH.");
+#endif
         }
         catch (OperationCanceledException)
         {
@@ -42,7 +48,11 @@ public static class AudioConverter
             TryDelete(wavPath);
 
             string hint = ffmpeg == null
+#if WINDOWS
                 ? "\n\nУстановите ffmpeg (положите ffmpeg.exe рядом с Transcriber.exe) — он читает любые форматы."
+#else
+                ? "\n\nУстановите ffmpeg через менеджер пакетов вашей системы (например, apt или Homebrew)."
+#endif
                 : $"\n\nОшибка ffmpeg:\n{ffmpegError}";
 
             throw new InvalidOperationException(
@@ -57,8 +67,36 @@ public static class AudioConverter
 
     private static TimeSpan GetDuration(string wavPath)
     {
+#if WINDOWS
         using var reader = new WaveFileReader(wavPath);
         var duration = reader.TotalTime;
+#else
+        // WAV заголовок содержит среднюю скорость потока и размер аудиоданных.
+        using var stream = File.OpenRead(wavPath);
+        using var reader = new BinaryReader(stream);
+        if (new string(reader.ReadChars(4)) != "RIFF")
+            throw new InvalidOperationException("Некорректный WAV файл.");
+        reader.ReadUInt32();
+        if (new string(reader.ReadChars(4)) != "WAVE")
+            throw new InvalidOperationException("Некорректный WAV файл.");
+        uint bytesPerSecond = 0;
+        uint dataLength = 0;
+        while (stream.Position + 8 <= stream.Length)
+        {
+            string chunk = new(reader.ReadChars(4));
+            uint size = reader.ReadUInt32();
+            long next = stream.Position + size + (size & 1);
+            if (chunk == "fmt " && size >= 12)
+            {
+                stream.Position += 8;
+                bytesPerSecond = reader.ReadUInt32();
+            }
+            else if (chunk == "data")
+                dataLength = size;
+            stream.Position = Math.Min(next, stream.Length);
+        }
+        var duration = bytesPerSecond > 0 ? TimeSpan.FromSeconds((double)dataLength / bytesPerSecond) : TimeSpan.Zero;
+#endif
 
         if (duration <= TimeSpan.Zero)
             throw new InvalidOperationException("Не удалось определить длительность аудио.");
@@ -66,6 +104,7 @@ public static class AudioConverter
         return duration;
     }
 
+#if WINDOWS
     private static void ConvertWithMediaFoundation(string input, string output)
     {
         using var reader = new MediaFoundationReader(input);
@@ -73,10 +112,12 @@ public static class AudioConverter
         using var resampler = new MediaFoundationResampler(reader, format) { ResamplerQuality = 60 };
         WaveFileWriter.CreateWaveFile(output, resampler);
     }
+#endif
 
     private static string? FindFfmpeg()
     {
-        string local = Path.Combine(AppContext.BaseDirectory, "ffmpeg.exe");
+        string executable = OperatingSystem.IsWindows() ? "ffmpeg.exe" : "ffmpeg";
+        string local = Path.Combine(AppContext.BaseDirectory, executable);
         if (File.Exists(local))
             return local;
 
@@ -88,7 +129,7 @@ public static class AudioConverter
         {
             try
             {
-                string candidate = Path.Combine(dir.Trim().Trim('"'), "ffmpeg.exe");
+                string candidate = Path.Combine(dir.Trim().Trim('"'), executable);
                 if (File.Exists(candidate))
                     return candidate;
             }

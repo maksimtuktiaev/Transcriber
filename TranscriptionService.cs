@@ -45,7 +45,9 @@ public sealed class TranscriptionService : IDisposable
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
                 throw new InvalidOperationException(
-                    (device == ComputeDevice.Gpu
+                    (device == ComputeDevice.Apple
+                        ? "Не удалось запустить Whisper с ускорением Apple Core ML. Попробуйте выбрать процессор в настройках.\n\n"
+                        : device == ComputeDevice.Gpu
                         ? "Не удалось запустить Whisper на видеокарте. Проверьте драйвер и установку CUDA; " +
                           "для модели turbo нужно около 4–6 ГБ видеопамяти, попробуйте small.\n\n"
                         : "Не удалось запустить Whisper на процессоре. Попробуйте выбрать видеокарту в настройках.\n\n") +

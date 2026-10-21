@@ -1,0 +1,25 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Transcriber.App"
+             RequestedThemeVariant="Default">
+  <Application.Styles>
+    <FluentTheme />
+    <Style Selector="Button.primary">
+      <Setter Property="Background" Value="#4388F5" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="CornerRadius" Value="9" />
+      <Setter Property="Padding" Value="18,11" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.subtle">
+      <Setter Property="CornerRadius" Value="9" />
+      <Setter Property="Padding" Value="14,9" />
+    </Style>
+    <Style Selector="Border.card">
+      <Setter Property="CornerRadius" Value="14" />
+      <Setter Property="Padding" Value="20" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+    </Style>
+  </Application.Styles>
+</Application>

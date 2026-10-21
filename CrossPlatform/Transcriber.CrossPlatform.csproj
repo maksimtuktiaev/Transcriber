@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Transcriber</AssemblyName>
+    <RootNamespace>Transcriber</RootNamespace>
+    <Version>1.1.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="12.1.4" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.4" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.4" />
+    <PackageReference Include="Whisper.net" Version="1.9.1" />
+    <PackageReference Include="Whisper.net.Runtime" Version="1.9.1" />
+    <PackageReference Include="Whisper.net.Runtime.Cuda.Linux" Version="1.9.1" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'linux' OR '$(RuntimeIdentifier)' == 'linux-x64'" />
+    <PackageReference Include="Whisper.net.Runtime.Cuda12.Linux" Version="1.9.1" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'linux' OR '$(RuntimeIdentifier)' == 'linux-x64'" />
+    <PackageReference Include="Whisper.net.Runtime.CoreML" Version="1.9.1" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'macos' OR '$(RuntimeIdentifier)' == 'osx-arm64' OR '$(RuntimeIdentifier)' == 'osx-x64'" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AppSettings.cs" Link="Core\AppSettings.cs" />
+    <Compile Include="..\AudioConverter.cs" Link="Core\AudioConverter.cs" />
+    <Compile Include="..\ModelManager.cs" Link="Core\ModelManager.cs" />
+    <Compile Include="..\TextProcessor.cs" Link="Core\TextProcessor.cs" />
+    <Compile Include="..\TranscriptionService.cs" Link="Core\TranscriptionService.cs" />
+  </ItemGroup>
+</Project>

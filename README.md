@@ -55,9 +55,53 @@
 
 Удалите Transcriber через **Параметры Windows → Приложения → Установленные приложения**. Можно также запустить деинсталлятор из папки установки. Пользовательские настройки и загруженные модели в `%LocalAppData%\Transcriber` не удаляются, чтобы не терять модели и предпочтения.
 
+## Установка для Linux
+
+В разделе [Releases](https://github.com/maksimtuktiaev/Transcriber-test/releases) скачайте `Transcriber-linux-x64.tar.gz` из релиза версии 1.1.0 или новее и распакуйте его в удобную папку. Самостоятельная сборка содержит .NET и библиотеки распознавания; устанавливать .NET отдельно не нужно.
+
+Перед первым запуском установите FFmpeg и системную библиотеку `libstdc++6`. Например, в Ubuntu или Debian:
+
+```bash
+sudo apt update
+sudo apt install ffmpeg libstdc++6
+```
+
+Запустите приложение из распакованной папки:
+
+```bash
+chmod +x Transcriber
+./Transcriber
+```
+
+Поддерживается Linux x64 с glibc 2.31 или новее. Для GPU режима требуется совместимая видеокарта NVIDIA и подходящий драйвер CUDA; иначе выберите процессор в **Настройки → Устройство распознавания**. При первом запуске модели скачиваются из интернета и хранятся в домашней папке пользователя.
+
+## Установка для macOS
+
+В [разделе релизов](https://github.com/maksimtuktiaev/Transcriber-test/releases) скачайте архив для своего Mac: `Transcriber-osx-arm64.zip` для Apple Silicon (M1 и новее) или `Transcriber-osx-x64.zip` для Mac с процессором Intel. Распакуйте архив и переместите `Transcriber.app` в папку **Программы**.
+
+Установите FFmpeg, например через [Homebrew](https://brew.sh/):
+
+```bash
+brew install ffmpeg
+```
+
+Если macOS не открывает приложение, нажмите на `Transcriber.app` правой кнопкой мыши, выберите **Открыть** и подтвердите запуск. Приложение не подписано сертификатом Apple Developer. В настройках можно выбрать **Apple Core ML** или процессор; на Mac Core ML использует доступное аппаратное ускорение Apple.
+
+При первом распознавании потребуется интернет для загрузки выбранной модели Whisper. Модели и настройки сохраняются в профиле пользователя macOS.
+
+## Сборка Linux и macOS из исходников
+
+Кроссплатформенный интерфейс находится в `CrossPlatform/`. Для сборки нужен .NET 8 SDK. FFmpeg устанавливается отдельно через системный менеджер пакетов. Например:
+
+```bash
+dotnet run --project CrossPlatform/Transcriber.CrossPlatform.csproj
+```
+
+Автономные сборки для целевых систем создаются командой `dotnet publish` с нужным runtime identifier, например `linux-x64`, `osx-arm64` или `osx-x64`. Релизные архивы собираются GitHub Actions при публикации тега вида `v*`.
+
 ## Запуск из исходного кода
 
-Для сборки исходников понадобится Windows x64 и [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
+Для сборки Windows-версии понадобится Windows x64 и [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0). Для Linux/macOS см. раздел выше.
 
 1. Скачайте или клонируйте этот репозиторий.
 2. Откройте PowerShell в папке проекта.

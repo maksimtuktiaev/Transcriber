@@ -1,0 +1,79 @@
+name: Cross-platform release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.rid }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+          - os: macos-latest
+            rid: osx-arm64
+          - os: macos-15-intel
+            rid: osx-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Publish self-contained app
+        run: dotnet publish CrossPlatform/Transcriber.CrossPlatform.csproj -c Release -r ${{ matrix.rid }} --self-contained true -o publish
+      - name: Package Linux archive
+        if: runner.os == 'Linux'
+        run: |
+          chmod +x publish/Transcriber
+          tar -czf Transcriber-${{ matrix.rid }}.tar.gz -C publish .
+      - name: Package macOS app
+        if: runner.os == 'macOS'
+        run: |
+          mkdir -p Transcriber.app/Contents/MacOS
+          cp -R publish/. Transcriber.app/Contents/MacOS/
+          cat > Transcriber.app/Contents/Info.plist <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+          <key>CFBundleName</key><string>Transcriber</string>
+          <key>CFBundleDisplayName</key><string>Transcriber</string>
+          <key>CFBundleIdentifier</key><string>com.maksimtuktiaev.transcriber</string>
+          <key>CFBundleVersion</key><string>${GITHUB_REF_NAME#v}</string>
+          <key>CFBundlePackageType</key><string>APPL</string>
+          <key>CFBundleExecutable</key><string>Transcriber</string>
+          <key>LSMinimumSystemVersion</key><string>12.0</string>
+          </dict></plist>
+          PLIST
+          chmod +x Transcriber.app/Contents/MacOS/Transcriber
+          codesign --force --deep --sign - Transcriber.app
+          ditto -c -k --sequesterRsrc --keepParent Transcriber.app Transcriber-${{ matrix.rid }}.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Transcriber-${{ matrix.rid }}
+          path: Transcriber-${{ matrix.rid }}.*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+      - name: Publish GitHub release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --title "Transcriber $TAG" --generate-notes
+          fi
+          gh release upload "$TAG" release-assets/* --clobber

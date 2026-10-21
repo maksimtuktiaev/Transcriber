@@ -13,7 +13,8 @@ public enum AppTheme
 public enum ComputeDevice
 {
     Gpu,
-    Cpu
+    Cpu,
+    Apple
 }
 
 public sealed class AppSettings
@@ -48,8 +49,18 @@ public sealed class AppSettings
 
     public static void ConfigureRuntime(ComputeDevice device)
     {
-        RuntimeOptions.RuntimeLibraryOrder = device == ComputeDevice.Cpu
-            ? [RuntimeLibrary.Cpu]
-            : [RuntimeLibrary.Cuda, RuntimeLibrary.Cuda12];
+        if (device == ComputeDevice.Cpu)
+        {
+            RuntimeOptions.RuntimeLibraryOrder = [RuntimeLibrary.Cpu];
+            return;
+        }
+
+        if (device == ComputeDevice.Apple && OperatingSystem.IsMacOS())
+        {
+            RuntimeOptions.RuntimeLibraryOrder = [RuntimeLibrary.CoreML, RuntimeLibrary.Cpu];
+            return;
+        }
+
+        RuntimeOptions.RuntimeLibraryOrder = [RuntimeLibrary.Cuda, RuntimeLibrary.Cuda12];
     }
 }
