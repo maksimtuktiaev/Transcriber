@@ -1,6 +1,45 @@
-# Transcriber
+<div align="center">
 
-Кроссплатформенное приложение для расшифровки аудио и видео на Windows, Linux и macOS. Распознавание выполняется локально с помощью Whisper; доступны CPU, NVIDIA CUDA и Apple Core ML. Готовый текст сохраняется рядом с исходным файлом.
+<h1>Transcriber</h1>
+
+<p><strong>Аудио и видео превращаются в аккуратный текст — локально на вашем компьютере.</strong></p>
+
+<img src="https://img.shields.io/badge/Windows-скачать-0078D4?style=for-the-badge&logo=windows&logoColor=white" alt="Windows — скачать">
+<img src="https://img.shields.io/badge/Linux-скачать-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux — скачать">
+<img src="https://img.shields.io/badge/macOS-скачать-111111?style=for-the-badge&logo=apple&logoColor=white" alt="macOS — скачать">
+
+<br>
+
+<a href="https://github.com/maksimtuktiaev/Transcriber/releases"><img src="https://img.shields.io/github/v/release/maksimtuktiaev/Transcriber?display_name=tag&style=flat-square&label=последний%20релиз" alt="Последний релиз"></a>
+<img src="https://img.shields.io/badge/распознавание-Whisper-6E56CF?style=flat-square" alt="Whisper">
+<img src="https://img.shields.io/badge/работает-локально-2EA44F?style=flat-square" alt="Локальная обработка">
+
+</div>
+
+Transcriber распознаёт речь в аудио- и видеофайлах с помощью Whisper. Обработка выполняется на устройстве: выберите процессор, NVIDIA CUDA или Apple Core ML. Поддерживаются **Windows, Linux и macOS**.
+
+## Скачать
+
+Выберите установщик для своей системы. Все варианты и предыдущие версии доступны на странице [Releases](https://github.com/maksimtuktiaev/Transcriber/releases).
+
+| Система | Готовая сборка |
+|---|---|
+| **Windows x64** | [Скачать установщик](https://github.com/maksimtuktiaev/Transcriber/releases/download/v1.0.0/TranscriberSetup-x64.exe) |
+| **Linux x64** | [Пакет DEB](https://github.com/maksimtuktiaev/Transcriber/releases/download/v1.1.1/Transcriber-linux-x64.deb) · [Переносимый архив](https://github.com/maksimtuktiaev/Transcriber/releases/download/v1.1.1/Transcriber-linux-x64.tar.gz) |
+| **macOS Apple Silicon** | [Образ DMG](https://github.com/maksimtuktiaev/Transcriber/releases/download/v1.1.1/Transcriber-osx-arm64.dmg) · [ZIP](https://github.com/maksimtuktiaev/Transcriber/releases/download/v1.1.1/Transcriber-osx-arm64.zip) |
+| **macOS Intel** | [Образ DMG](https://github.com/maksimtuktiaev/Transcriber/releases/download/v1.1.1/Transcriber-osx-x64.dmg) · [ZIP](https://github.com/maksimtuktiaev/Transcriber/releases/download/v1.1.1/Transcriber-osx-x64.zip) |
+
+## Как это работает
+
+```mermaid
+flowchart LR
+    A[Аудио или видео] --> B[Whisper распознаёт речь]
+    B --> C[Текст очищается и делится на абзацы]
+    C --> D[Готовый TXT рядом с исходным файлом]
+    E[CPU · NVIDIA CUDA · Apple Core ML] -. ускоряет .-> B
+```
+
+**Возможности:** локальное распознавание, выбор модели Whisper, ускорение на совместимом оборудовании, светлая и тёмная темы, сохранение форматированного текста рядом с записью.
 
 ## Установка для Windows
 
